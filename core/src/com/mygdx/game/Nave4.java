@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+
 
 
 
@@ -23,6 +25,8 @@ public class Nave4 {
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
+
+    private Vector2 direccionNave = new Vector2(0, 1);
     
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
     	sonidoHerido = soundChoque;
@@ -35,43 +39,48 @@ public class Nave4 {
 
     }
 
-    private void moverse()
-    {
+    private void moverse() {
+        // Movimiento y rotación basados en el vector de dirección
         xVel = 0;
         yVel = 0;
+
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            direccionNave.set(-1, 0); // Izquierda
             xVel = -5;
-            spr.setRotation(90);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            direccionNave.set(1, 0); // Derecha
             xVel = 5;
-            spr.setRotation(270);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            direccionNave.set(0, 1); // Arriba
             yVel = 5;
-            spr.setRotation(0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            direccionNave.set(0, -1); // Abajo
             yVel = -5;
-            spr.setRotation(180);
         }
 
-        if(xVel > 0 && yVel >0)
-        {
-            spr.setRotation(315);
+        // Combinar las teclas para las diagonales
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            direccionNave.set(-1, 1); // Arriba izquierda
         }
-        if(xVel > 0 && yVel < 0)
-        {
-            spr.setRotation(225);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            direccionNave.set(1, 1); // Arriba derecha
         }
-        if(xVel < 0 && yVel > 0)
-        {
-            spr.setRotation(45);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            direccionNave.set(-1, -1); // Abajo izquierda
         }
-        if(xVel < 0 && yVel < 0)
-        {
-            spr.setRotation(135);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            direccionNave.set(1, -1); // Abajo derecha
         }
+
+        // Normalizar el vector de dirección para mantenerlo unitario
+        direccionNave.nor();
+
+        // Actualizar el ángulo de rotación en función del vector de dirección
+        float degrees = direccionNave.angleDeg();
+        spr.setRotation(degrees - 90);
     }
 
     public void draw(SpriteBatch batch, PantallaJuego juego){
@@ -80,20 +89,7 @@ public class Nave4 {
         if (!herido) {
 	        // que se mueva con teclado
             moverse();
-	     /*   if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
-	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
-	        
-	        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-	        	xVel -=Math.sin(Math.toRadians(rotacion));
-	        	yVel +=Math.cos(Math.toRadians(rotacion));
-	        	System.out.println(rotacion+" - "+Math.sin(Math.toRadians(rotacion))+" - "+Math.cos(Math.toRadians(rotacion))) ;    
-	        }
-	        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-	        	xVel +=Math.sin(Math.toRadians(rotacion));
-	        	yVel -=Math.cos(Math.toRadians(rotacion));
-	        	     
-	        }*/
-	        
+
 	        // que se mantenga dentro de los bordes de la ventana
 	        if (x+xVel < 0 || x+xVel+spr.getWidth() > Gdx.graphics.getWidth())
 	        	xVel*=-1;
@@ -112,7 +108,7 @@ public class Nave4 {
  		 }
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {         
-          Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,0,3,txBala);
+          Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,(int) (10*direccionNave.x),(int) (10*direccionNave.y),txBala);
 	      juego.agregarBala(bala);
 	      soundBala.play();
         }
