@@ -2,11 +2,11 @@ package com.mygdx.game;
 
 public class PowerUpVidas extends PowerUp{
 
+    
 
-
-    public void deshacerEfecto()
+    public void deshacerEfecto(Nave4 nave)
     {
-
+                
     }
     @Override
     public void aplicarEfecto(Nave4 nave) {

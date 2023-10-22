@@ -34,16 +34,52 @@ public class Nave4 {
     	spr.setBounds(x, y, 45, 45);
 
     }
+
+    private void moverse()
+    {
+        xVel = 0;
+        yVel = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            xVel = -5;
+            spr.setRotation(90);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            xVel = 5;
+            spr.setRotation(270);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            yVel = 5;
+            spr.setRotation(0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            yVel = -5;
+            spr.setRotation(180);
+        }
+
+        if(xVel > 0 && yVel >0)
+        {
+            spr.setRotation(315);
+        }
+        if(xVel > 0 && yVel < 0)
+        {
+            spr.setRotation(225);
+        }
+        if(xVel < 0 && yVel > 0)
+        {
+            spr.setRotation(45);
+        }
+        if(xVel < 0 && yVel < 0)
+        {
+            spr.setRotation(135);
+        }
+    }
+
     public void draw(SpriteBatch batch, PantallaJuego juego){
         float x =  spr.getX();
         float y =  spr.getY();
         if (!herido) {
 	        // que se mueva con teclado
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) xVel--;
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) xVel++;
-        	if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) yVel--;     
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) yVel++;
-        	
+            moverse();
 	     /*   if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
 	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
 	        
