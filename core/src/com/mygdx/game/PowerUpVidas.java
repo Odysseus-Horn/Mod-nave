@@ -2,10 +2,8 @@ package com.mygdx.game;
 
 public class PowerUpVidas implements PowerUp{
 
-    
-
     @Override
-    public void deshacerEfecto(Nave4 nave)
+    public void deshacerEfecto(Nave nave)
     {
         if(nave.getVidas() > 3)
         {
@@ -13,7 +11,7 @@ public class PowerUpVidas implements PowerUp{
         }
     }
     @Override
-    public void aplicarEfecto(Nave4 nave) {
+    public void aplicarEfecto(Nave nave) {
         nave.setVidas(nave.getVidas() + 1);
     }
 }

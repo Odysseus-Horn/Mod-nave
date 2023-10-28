@@ -83,7 +83,7 @@ public abstract class Nave {
         spr.setRotation(degrees - 90);
     }
 
-    public abstract void disparar();
+    public abstract void disparar(PantallaJuego juego);
 
     public void draw(SpriteBatch batch, PantallaJuego juego){
         float x =  spr.getX();
@@ -153,9 +153,19 @@ public abstract class Nave {
         return herido;
     }
 
+    public void aumentarVelocidad(float porcentaje)
+    {
+        xVel = (porcentaje/100) + 5*direccionNave.x;
+        yVel = (porcentaje/100) + 5*direccionNave.y;
+    }
+
     public int getVidas() {return vidas;}
     //public boolean isDestruida() {return destruida;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public void setVidas(int vidas2) {vidas = vidas2;}
+
+    public Vector2 getDireccionNave() {
+        return direccionNave;
+    }
 }
