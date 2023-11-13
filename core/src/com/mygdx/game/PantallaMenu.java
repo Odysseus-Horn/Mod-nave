@@ -5,17 +5,21 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.Texture;
 
 
 public class PantallaMenu implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
+	private Texture backgroundImage;
 
 	public PantallaMenu(SpaceNavigation game) {
 		this.game = game;
+
         
 		camera = new OrthographicCamera();
+		backgroundImage = new Texture(Gdx.files.internal("pirata.jpg"));
 		camera.setToOrtho(false, 1200, 800);
 	}
 
@@ -27,7 +31,8 @@ public class PantallaMenu implements Screen {
 		game.getBatch().setProjectionMatrix(camera.combined);
 
 		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
+		game.getBatch().draw(backgroundImage, 0, 0, 1200, 800);
+		game.getFont().draw(game.getBatch(), "Bienvenido a Destruye a los Piratas !", 140, 400);
 		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
 	
 		game.getBatch().end();
@@ -74,7 +79,7 @@ public class PantallaMenu implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+		backgroundImage.dispose();
 	}
    
 }
