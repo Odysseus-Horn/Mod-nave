@@ -36,10 +36,12 @@ public abstract class Nave {
         spr.setPosition(x, y);
         //spr.setOriginCenter();
         spr.setBounds(x, y, 45, 45);
+        spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
 
     }
 
     private void moverse() {
+
         // Movimiento y rotación basados en el vector de dirección
         xVel = 0;
         yVel = 0;
@@ -86,6 +88,7 @@ public abstract class Nave {
     public abstract void disparar(PantallaJuego juego);
 
     public void draw(SpriteBatch batch, PantallaJuego juego){
+        //se obtienen las dimensiones del sprite
         float x =  spr.getX();
         float y =  spr.getY();
         if (!herido) {
