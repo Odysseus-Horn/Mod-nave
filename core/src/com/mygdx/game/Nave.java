@@ -25,6 +25,7 @@ public abstract class Nave {
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
+    private  estrategiaDisparo disparo;
 
     private Vector2 direccionNave = new Vector2(0, 1);
 
@@ -37,6 +38,7 @@ public abstract class Nave {
         //spr.setOriginCenter();
         spr.setBounds(x, y, 45, 45);
         spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
+        disparo = new DisparoDefault(soundBala); // Inicialización de la estrategia de disparo
 
     }
 
@@ -83,6 +85,14 @@ public abstract class Nave {
         // Actualizar el ángulo de rotación en función del vector de dirección
         float degrees = direccionNave.angleDeg();
         spr.setRotation(degrees - 90);
+    }
+    //hay que cambiar esto 
+    public void disparar1(PantallaJuego juego) {
+        float x = spr.getX() + spr.getWidth() / 2 - 5;
+        float y = spr.getY() + spr.getHeight() / 2 - 5;
+        int xVel = (int) (10 * direccionNave.x);
+        int yVel = (int) (10 * direccionNave.y);
+        disparo.disparar(x, y, xVel, yVel,this.txBala, juego); // Llamada al método de la interfaz estrategiaDisparo
     }
 
     public abstract void disparar(PantallaJuego juego);
