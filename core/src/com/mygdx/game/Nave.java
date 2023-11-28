@@ -29,6 +29,8 @@ public abstract class Nave {
 
     private Vector2 direccionNave = new Vector2(0, 1);
 
+    private AudioManager audioManager;
+
     public Nave(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         sonidoHerido = soundChoque;
         this.soundBala = soundBala;
@@ -39,7 +41,7 @@ public abstract class Nave {
         spr.setBounds(x, y, 45, 45);
         spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
         disparo = new DisparoDefault(soundBala); // Inicialización de la estrategia de disparo
-
+        audioManager = audioManager.getInstance();
     }
 
     private void moverse() {
@@ -125,7 +127,7 @@ public abstract class Nave {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,(int) (10*direccionNave.x),(int) (10*direccionNave.y),txBala);
             juego.agregarBala(bala);
-            soundBala.play();
+            audioManager.playSound(soundBala);
         }
 
     }
@@ -151,7 +153,7 @@ public abstract class Nave {
             vidas--;
             herido = true;
             tiempoHerido=tiempoHeridoMax;
-            sonidoHerido.play();
+            audioManager.playSound(sonidoHerido);
             if (vidas<=0)
                 destruida = true;
             return true;

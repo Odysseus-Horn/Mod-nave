@@ -24,12 +24,19 @@ public class PantallaJuego implements Screen {
 	private Texture fondo;
 	private Sound explosionSound;
 	private Music gameMusic;
+	private Sound pauseSound;
 	private int score;
 	private int ronda;
 	private int velXAsteroides; 
 	private int velYAsteroides; 
 	private int cantAsteroides;
+
+	private AudioManager audioManager;
+	private int opcion = 1;
+	private boolean keyDownPressed;
+	private boolean keyUpPressed;
 	private List<PowerUp> powerUps;
+
 	private boolean paused;
 	private BuqueGuerra nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();
@@ -39,29 +46,27 @@ public class PantallaJuego implements Screen {
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+
 		this.game = game;
 		this.ronda = ronda;
 		this.score = score;
 		boolean paused = false;
-
 		this.velXAsteroides = velXAsteroides;
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
 		this.fondo = new Texture(Gdx.files.internal("sea-background.png"));
-
-
+		audioManager = audioManager.getInstance();
 
 		batch = game.getBatch();
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 800, 640);
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-		explosionSound.setVolume(1,0.5f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+		pauseSound = Gdx.audio.newSound(Gdx.files.internal("pause.mp3"));
 
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
 		gameMusic.setLooping(true);
-		gameMusic.setVolume(0.5f);
-		gameMusic.play();
+		audioManager.playMusic(gameMusic);
 
 	    // cargar imagen de la nave, 64x64   
 	    nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
@@ -69,6 +74,7 @@ public class PantallaJuego implements Screen {
 	    				new Texture(Gdx.files.internal("Rocket2.png")), 
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
         nave.setVidas(vidas);
+
         //crear asteroides
         Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
@@ -91,7 +97,16 @@ public class PantallaJuego implements Screen {
 	@Override
 	public void render(float delta) {
 
+		//lógica de la pausa del juego
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			if(paused)
+			{
+				audioManager.playMusic(gameMusic);
+			}
+			else{
+				gameMusic.pause(); // Pausar la música al entrar en el estado de pausa
+				audioManager.playSound(pauseSound);
+			}
 			paused = !paused;
 		}
 
@@ -108,7 +123,7 @@ public class PantallaJuego implements Screen {
 					b.update();
 					for (int j = 0; j < balls1.size(); j++) {
 					  if (b.checkCollision(balls1.get(j))) {
-						 explosionSound.play();
+						 audioManager.playSound(explosionSound);
 						 balls1.remove(j);
 						 balls2.remove(j);
 						 j--;
@@ -175,6 +190,7 @@ public class PantallaJuego implements Screen {
 		  }
 		}else {
 			// Dibujar una pantalla de pausa
+			pause();
 			showPauseScreen();
 		}
 
@@ -182,15 +198,118 @@ public class PantallaJuego implements Screen {
 
 	}
 
+	private void imprimirFlecha()
+	{
+		switch(opcion)
+		{
+			case 1:
+				game.getFont().draw(batch, "->", Gdx.graphics.getWidth() / 2.f - 400, Gdx.graphics.getHeight() / 2.f + 200);
+				break;
+			case 2:
+				game.getFont().draw(batch, "->", Gdx.graphics.getWidth() / 2.f - 400, Gdx.graphics.getHeight() / 2.f + 100);
+
+				break;
+			case 3:
+				game.getFont().draw(batch, "->", Gdx.graphics.getWidth() / 2.f - 400, Gdx.graphics.getHeight() / 2.f);
+				break;
+		}
+
+	}
+
+
+
+	private void cambiarAjustes()
+	{
+		switch (opcion)
+		{
+			case 1: //volumen global
+				//aumentar volumen
+				if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT))
+				{
+					if(audioManager.getMasterVolume() < 1.0f)
+					{
+						audioManager.setMasterVolume(Math.round((audioManager.getMasterVolume() + 0.10f) * 10.0f) / 10.0f);
+					}
+				}
+				//reducir volumen
+				if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT))
+				{
+					if(audioManager.getMasterVolume() > 0)
+					{
+						audioManager.setMasterVolume(Math.round((audioManager.getMasterVolume() - 0.10f) * 10.0f) / 10.0f);
+					}
+				}
+
+				break;
+			case 2: //volumen de SFX
+				//aumentar volumen
+				if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT))
+				{
+					if(audioManager.getSoundVolume() < 1.0f)
+					{
+						audioManager.setSoundVolume(Math.round((audioManager.getSoundVolume() + 0.10f) * 10.0f) / 10.0f);
+					}
+
+				}
+				// reducir volumen
+				if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT))
+				{
+					if(audioManager.getSoundVolume() > 0)
+					{
+						audioManager.setSoundVolume(Math.round((audioManager.getSoundVolume() - 0.10f) * 10.0f) / 10.0f);
+					}
+				}
+				break;
+			case 3: //volumen de música
+				if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT))
+				{
+					if(audioManager.getMusicVolume() < 1.f)
+					{
+						audioManager.setMusicVolume(Math.round((audioManager.getMusicVolume() + 0.10f) * 10.0f) / 10.0f);
+					}
+					break;
+				}
+				if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT))
+				{
+					if(audioManager.getMusicVolume() > 0)
+					{
+						audioManager.setMusicVolume(Math.round((audioManager.getMusicVolume() - 0.10f) * 10.0f) / 10.0f);
+					}
+				}
+			break;
+		}
+	}
+
+	//opcion 1: masterVolume ; 2: SoundVolume ; 3:
 	private void showPauseScreen() {
 		// Configurar la transparencia para hacer la pantalla de pausa
 		Gdx.gl.glClearColor(0, 0, 0, 0.5f); // Fondo transparente
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
 		// Dibujar el texto "PAUSE" en el centro de la pantalla
 		batch.begin();
+
+		//lógica del movimiento de las opciones de menú
+		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
+			opcion++;
+			if(opcion > 3) opcion = 1;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
+		{
+			opcion--;
+			if(opcion < 1) opcion = 3;
+		}
+
+		imprimirFlecha();
+		cambiarAjustes();
 		game.getFont().getData().setScale(3f);
-		game.getFont().draw(batch, "PAUSE", Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2);
+		game.getFont().draw(batch, "PAUSE", Gdx.graphics.getWidth() / 2.f - 70, Gdx.graphics.getHeight() / 2.f + 300);
+		game.getFont().draw(batch, "Volumen general: " + audioManager.getMasterVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f + 200);
+		game.getFont().draw(batch, "Volumen SFX: " + audioManager.getSoundVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f + 100);
+		game.getFont().draw(batch, "Volumen música: " + audioManager.getMusicVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f);
+
+
 		batch.end();
 	}
     public boolean agregarBala(Bullet bb) {
@@ -200,7 +319,7 @@ public class PantallaJuego implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		gameMusic.play();
+		audioManager.playMusic(gameMusic);
 	}
 
 	@Override
@@ -215,6 +334,7 @@ public class PantallaJuego implements Screen {
 		if (!paused) {
 			paused = true;
 			gameMusic.pause(); // Pausar la música al entrar en el estado de pausa
+			audioManager.playSound(pauseSound);
 		}
 	}
 
@@ -223,7 +343,7 @@ public class PantallaJuego implements Screen {
 		// TODO Auto-generated method stub
 		if (paused) {
 			paused = false;
-			gameMusic.play(); // Reanudar la música al salir del estado de pausa
+			audioManager.playMusic(gameMusic); // Reanudar la música al salir del estado de pausa
 		}
 	}
 
@@ -238,6 +358,7 @@ public class PantallaJuego implements Screen {
 		// TODO Auto-generated method stub
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
+		this.pauseSound.dispose();
 	}
    
 }
