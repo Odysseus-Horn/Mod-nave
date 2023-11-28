@@ -12,7 +12,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
-
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class PantallaJuego implements Screen {
@@ -28,7 +29,7 @@ public class PantallaJuego implements Screen {
 	private int velXAsteroides; 
 	private int velYAsteroides; 
 	private int cantAsteroides;
-
+	private List<PowerUp> powerUps;
 	private boolean paused;
 	private BuqueGuerra nave;
 	private  ArrayList<Ball2> balls1 = new ArrayList<>();

@@ -178,6 +178,8 @@ public abstract class Nave {
     public int getY() {return (int) spr.getY();}
     public void setVidas(int vidas2) {vidas = vidas2;}
 
+
+
     public Vector2 getDireccionNave() {
         return direccionNave;
     }
