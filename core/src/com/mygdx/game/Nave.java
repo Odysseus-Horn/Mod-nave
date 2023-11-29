@@ -160,6 +160,14 @@ public abstract class Nave {
         }
         return false;
     }
+    public boolean checkCollisionPowerUp(PowerUpBall powerUp) {
+        if (!herido && powerUp.getArea().overlaps(spr.getBoundingRectangle())) {
+            // Lógica de colisión con power-up, por ejemplo, aplicar efecto de vida
+            powerUp.aplicarEfectoVidas(this);
+            return true;
+        }
+        return false;
+    }
 
     public boolean estaDestruido() {
         return !herido && destruida;
@@ -173,6 +181,12 @@ public abstract class Nave {
         xVel = (porcentaje/100) + 5*direccionNave.x;
         yVel = (porcentaje/100) + 5*direccionNave.y;
     }
+    //el uly me la mama
+    public void aumentarVidas(int cantidad) {
+        vidas += cantidad;
+
+    }
+
 
     public int getVidas() {return vidas;}
     //public boolean isDestruida() {return destruida;}

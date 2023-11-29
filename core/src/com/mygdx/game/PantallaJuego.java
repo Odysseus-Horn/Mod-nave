@@ -43,6 +43,12 @@ public class PantallaJuego implements Screen {
 	private  ArrayList<Ball2> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 
+	private ArrayList<PowerUpBall> powersOne = new ArrayList<>();
+	private ArrayList<PowerUpBall> powersTwo = new ArrayList<>();
+	private float powerUpTimer;
+	private final float timeBetweenPowerUps; // Puedes ajustar el tiempo entre power-ups según tus necesidades
+	private int powerUpCount;
+	private final int maxPowerUps = 5;
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -55,6 +61,10 @@ public class PantallaJuego implements Screen {
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
 		this.fondo = new Texture(Gdx.files.internal("sea-background.png"));
+
+		this.timeBetweenPowerUps = 10f; // Puedes ajustar el tiempo entre power-ups según tus necesidades
+		this.powerUpTimer = 0;
+		this.powerUpCount = 0;
 		audioManager = audioManager.getInstance();
 
 		batch = game.getBatch();
@@ -85,6 +95,18 @@ public class PantallaJuego implements Screen {
 	  	    balls1.add(bb);
 	  	    balls2.add(bb);
 	  	}
+		//Crear Bolas (powerUp)
+		Random s = new Random();
+		for (int i = 0; i < powerUpCount; i++) {
+			PowerUpBall cc = new PowerUpBall(r.nextInt((int)Gdx.graphics.getWidth()),
+					50+r.nextInt((int)Gdx.graphics.getHeight()-50),
+					20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4),
+					new Texture(Gdx.files.internal("bolaroja1.png")));
+			powersOne.add(cc);
+			powersTwo.add(cc);
+		}
+
+
 	}
     
 	public void dibujaEncabezado() {
@@ -96,6 +118,7 @@ public class PantallaJuego implements Screen {
 	}
 	@Override
 	public void render(float delta) {
+
 
 		//lógica de la pausa del juego
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -112,10 +135,17 @@ public class PantallaJuego implements Screen {
 
 		if(!paused){
 
+			powerUpTimer += delta;
 		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		  batch.begin();
 		  batch.draw(fondo, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		  dibujaEncabezado();
+
+			if (powerUpTimer > timeBetweenPowerUps) {
+				generarNuevoPowerUp();
+				powerUpTimer = 0; // Reiniciar el temporizador
+				powerUpCount ++; //incrementar el contador
+			}
 		  if (!nave.estaHerido()) {
 			  // colisiones entre balas y asteroides y su destruccion
 			  for (int i = 0; i < balas.size(); i++) {
@@ -137,10 +167,38 @@ public class PantallaJuego implements Screen {
 						i--; //para no saltarse 1 tras eliminar del arraylist
 					}
 			  }
+
+			  for (int i = 0; i < powersOne.size(); i++) {
+				  PowerUpBall powerOne = powersOne.get(i);
+				  for (int j = 0; j < powersTwo.size(); j++) {
+					  PowerUpBall powerTwo = powersTwo.get(j);
+					  if (i < j) {
+						  powerOne.checkCollision(powerTwo);
+					  }
+				  }
+				  // Comprobar la colisión con la nave y eliminar el power-up si es necesario
+				  if (nave.checkCollisionPowerUp(powerOne)) {
+					  // Elimina el power-up
+					  powersOne.remove(i);
+					  powersTwo.remove(powerOne);
+					  i--;
+				  }
+			  }
+
 			  //actualizar movimiento de asteroides dentro del area
 			  for (Ball2 ball : balls1) {
 				  ball.update();
 			  }
+
+			  for (PowerUpBall powerUpBall : powersOne) {
+				  powerUpBall.draw(batch);
+			  }
+				// Actualizar movimiento de powerUps dentro del área
+
+			  for (PowerUpBall powerUpBall : powersOne) {
+				  powerUpBall.update();
+			  }
+
 			  //colisiones entre asteroides y sus rebotes
 			  for (int i=0;i<balls1.size();i++) {
 				Ball2 ball1 = balls1.get(i);
@@ -151,6 +209,16 @@ public class PantallaJuego implements Screen {
 
 				  }
 				}
+			  }//colisiones entre powerUps y sus rebotes
+			  for (int i=0;i<powersOne.size();i++) {
+				  PowerUpBall powerOne = powersTwo.get(i);
+				  for (int j=0;j<powersTwo.size();j++) {
+					  PowerUpBall powerTwo = powersTwo.get(j);
+					  if (i<j) {
+						  powerOne.checkCollision(powerTwo);
+
+					  }
+				  }
 			  }
 		  }
 		  //dibujar balas
@@ -165,6 +233,7 @@ public class PantallaJuego implements Screen {
 				  //perdió vida o game over
 				  if (nave.checkCollision(b)) {
 					//asteroide se destruye con el choque
+
 					 balls1.remove(i);
 					 balls2.remove(i);
 					 i--;
@@ -196,6 +265,20 @@ public class PantallaJuego implements Screen {
 
 
 
+	}
+	private void generarNuevoPowerUp() {
+		Random random = new Random();
+		PowerUpBall nuevoPowerUp = new PowerUpBall(
+				random.nextInt((int) Gdx.graphics.getWidth()),
+				50 + random.nextInt((int) Gdx.graphics.getHeight() - 50),
+				20 + random.nextInt(10),
+				velXAsteroides + random.nextInt(4),
+				velYAsteroides + random.nextInt(4),
+				new Texture(Gdx.files.internal("bolaroja1.png"))
+		);
+
+		powersOne.add(nuevoPowerUp);
+		powersTwo.add(nuevoPowerUp);
 	}
 
 	private void imprimirFlecha()
@@ -315,7 +398,7 @@ public class PantallaJuego implements Screen {
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }
-	
+
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
