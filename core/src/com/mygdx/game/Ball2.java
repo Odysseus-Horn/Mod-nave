@@ -76,5 +76,8 @@ public class Ball2 {
 		this.ySpeed = ySpeed;
 	}
 	
-    
+    public void quitarVida(Nave nave)
+    {
+        nave.setVidas(nave.getVidas() - 1);
+    }
 }

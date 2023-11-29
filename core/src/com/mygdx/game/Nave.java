@@ -144,16 +144,20 @@ public abstract class Nave {
             if (b.getySpeed() ==0) b.setySpeed(b.getySpeed() + (int)yVel/2);
             yVel = - yVel;
             b.setySpeed(- b.getySpeed());
-            // despegar sprites
-      /*      int cont = 0;
+            // despegar sprite
+            /*
+            int cont = 0;
             while (b.getArea().overlaps(spr.getBoundingRectangle()) && cont<xVel) {
                spr.setX(spr.getX()+Math.signum(xVel));
             }   */
             //actualizar vidas y herir
-            vidas--;
+
+            b.quitarVida(this);
+
             herido = true;
             tiempoHerido=tiempoHeridoMax;
             audioManager.playSound(sonidoHerido);
+
             if (vidas<=0)
                 destruida = true;
             return true;
@@ -185,6 +189,10 @@ public abstract class Nave {
     public void aumentarVidas(int cantidad) {
         vidas += cantidad;
 
+    }
+    public void quitarVida(int cantidad)
+    {
+        vidas-=cantidad;
     }
 
 
