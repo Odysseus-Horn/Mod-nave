@@ -240,7 +240,7 @@ public class PantallaJuego implements Screen {
 			  }
 			}
 
-		  if (nave.estaDestruido()) {
+		  if (nave.getVidas() == 0) {
 			if (score > game.getHighScore())
 				game.setHighScore(score);
 			Screen ss = new PantallaGameOver(game);
