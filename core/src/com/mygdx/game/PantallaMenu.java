@@ -38,9 +38,7 @@ public class PantallaMenu implements Screen {
 		game.getBatch().end();
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaJuego(game,1,3,0,1,1,10);
-			ss.resize(1200, 800);
-			game.setScreen(ss);
+			game.setScreen(new PantallaSeleccionNave(game));
 			dispose();
 		}
 	}

@@ -43,7 +43,7 @@ public class PantallaJuego implements Screen {
 	private List<PowerUp> powerUps;
 
 	private boolean paused;
-	private BuqueGuerra nave;
+	private Nave nave;
 	private  ArrayList<BombaMarina> balls1 = new ArrayList<>();
 	private  ArrayList<BombaMarina> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
@@ -63,10 +63,11 @@ public class PantallaJuego implements Screen {
 	private String powerUp;
 
 
-	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
+	public PantallaJuego(SpaceNavigation game,Nave nave ,int ronda, int vidas, int score,
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
 
 		this.game = game;
+		this.nave = nave;
 		this.ronda = ronda;
 		this.score = score;
 		boolean paused = false;
@@ -97,14 +98,11 @@ public class PantallaJuego implements Screen {
 		LevelFactory fabricaNivel1 = new Level1Factory();
 		LevelFactory fabricaNivel2 = new Level2Factory();
 
-	    // cargar imagen de la nave, 64x64   
-	    nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
-	    				new Texture(Gdx.files.internal("Rocket2.png")), 
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
-        nave.setVidas(vidas);
 
-      		//crear asteroides
+
+
+
+		//crear asteroides
 		if(ronda == 1){
 			balls1 = fabricaNivel1.crearObstaculos(cantAsteroides, velXAsteroides,velYAsteroides);
 			balls2.addAll(balls1);
@@ -373,7 +371,7 @@ public class PantallaJuego implements Screen {
 
 		  //nivel completado
 		  if (balls1.size()==0) {
-			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score,
+			Screen ss = new PantallaJuego(game,nave, ronda+1, nave.getVidas(), score,
 					velXAsteroides+3, velYAsteroides+3, cantAsteroides+10);
 			ss.resize(1200, 800);
 			game.setScreen(ss);
