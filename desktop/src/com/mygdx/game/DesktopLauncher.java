@@ -13,4 +13,4 @@ public class DesktopLauncher {
 		config.setWindowedMode(1200, 800);
  		new Lwjgl3Application(new SpaceNavigation(), config);
 	}
-}
+}	

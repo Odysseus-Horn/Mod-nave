@@ -50,10 +50,18 @@ public class PantallaJuego implements Screen {
 
 	private ArrayList<PowerUpBall> powersOne = new ArrayList<>();
 	private ArrayList<PowerUpBall> powersTwo = new ArrayList<>();
+	private ArrayList<PowerUpBall> powersThree = new ArrayList<>();
+	private ArrayList<PowerUpBall> powersFour = new ArrayList<>();
+	private ArrayList<PowerUpBall> powersFive = new ArrayList<>();
+	private ArrayList<PowerUpBall> powersSix = new ArrayList<>();
+	
 	private float powerUpTimer;
 	private final float timeBetweenPowerUps; // Puedes ajustar el tiempo entre power-ups según tus necesidades
 	private int powerUpCount;
 	private final int maxPowerUps = 5;
+	private float elapsedTimeSincePowerUp;
+	private String powerUp;
+
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,  
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -69,6 +77,9 @@ public class PantallaJuego implements Screen {
 		this.timeBetweenPowerUps = 10f; // Puedes ajustar el tiempo entre power-ups según tus necesidades
 		this.powerUpTimer = 0;
 		this.powerUpCount = 0;
+		this.elapsedTimeSincePowerUp = 0;
+		
+		
 		audioManager = audioManager.getInstance();
 		batch = game.getBatch();
 		camera = new OrthographicCamera();	
@@ -105,19 +116,39 @@ public class PantallaJuego implements Screen {
 
 
 
-		Random r = new Random();
+		//Random r = new Random();
 
 
-		//Crear Bolas (powerUp)
+		//Crear Bolas (powerUp-vidas)
 		Random s = new Random();
 		for (int i = 0; i < powerUpCount; i++) {
-			PowerUpBall cc = new PowerUpBall(r.nextInt((int)Gdx.graphics.getWidth()),
-					50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-					20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4),
+			PowerUpBall cc = new PowerUpBall(s.nextInt((int)Gdx.graphics.getWidth()),
+					50+s.nextInt((int)Gdx.graphics.getHeight()-50),
+					20+s.nextInt(10), velXAsteroides+s.nextInt(4), velYAsteroides+s.nextInt(4),
 					new Texture(Gdx.files.internal("bolaroja1.png")));
 			powersOne.add(cc);
 			powersTwo.add(cc);
 		}
+		//Crear Bolas (powerUp vel)
+				Random t = new Random();
+				for (int i = 0; i < powerUpCount; i++) {
+					PowerUpBall dd = new PowerUpBall(t.nextInt((int)Gdx.graphics.getWidth()),
+							50+t.nextInt((int)Gdx.graphics.getHeight()-50),
+							20+t.nextInt(10), velXAsteroides+t.nextInt(4), velYAsteroides+t.nextInt(4),
+							new Texture(Gdx.files.internal("bolazul1.png")));
+					powersThree.add(dd);
+					powersFour.add(dd);
+				}
+				Random w = new Random();
+				for (int i = 0; i < powerUpCount; i++) {
+					PowerUpBall ee = new PowerUpBall(w.nextInt((int)Gdx.graphics.getWidth()),
+							50+w.nextInt((int)Gdx.graphics.getHeight()-50),
+							20+w.nextInt(10), velXAsteroides+w.nextInt(4), velYAsteroides+w.nextInt(4),
+							new Texture(Gdx.files.internal("bolanegra1.png")));
+					powersThree.add(ee);
+					powersFour.add(ee);
+				}
+
 
 
 	}
@@ -153,12 +184,18 @@ public class PantallaJuego implements Screen {
 		  batch.begin();
 		  batch.draw(fondo, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		  dibujaEncabezado();
+		  
 
 			if (powerUpTimer > timeBetweenPowerUps) {
-				generarNuevoPowerUp();
+				powerUp = generarNuevoPowerUpAleatorio();
 				powerUpTimer = 0; // Reiniciar el temporizador
 				powerUpCount ++; //incrementar el contador
 			}
+			/*
+			if (elapsedTimeSincePowerUp >= 10) {
+			    generarNuevoPowerUpAleatorio();
+			    elapsedTimeSincePowerUp = 0;
+			}*/
 		  if (!nave.estaHerido()) {
 			  // colisiones entre balas y asteroides y su destruccion
 			  for (int i = 0; i < balas.size(); i++) {
@@ -180,7 +217,42 @@ public class PantallaJuego implements Screen {
 						i--; //para no saltarse 1 tras eliminar del arraylist
 					}
 			  }
-
+			//bola negra
+			  for (int i = 0; i < powersFive.size(); i++) {
+				  PowerUpBall powerFive = powersFive.get(i);
+				  for (int j = 0; j < powersSix.size(); j++) {
+					  PowerUpBall powerSix = powersSix.get(j);
+					  if (i < j) {
+						  powerFive.checkCollision(powerSix);
+					  }
+				  }
+				  // Comprobar la colisión con la nave y eliminar el power-up si es necesario
+				  if (nave.checkCollisionPowerUp(powerFive,powerUp)) {
+					  // Elimina el power-up
+					  powersFive.remove(i);
+					  powersSix.remove(powerFive);
+					  i--;
+					  score+= nave.getScore();
+				  }
+			  }
+			  //bola azul
+			  for (int i = 0; i < powersThree.size(); i++) {
+				  PowerUpBall powerThree = powersThree.get(i);
+				  for (int j = 0; j < powersFour.size(); j++) {
+					  PowerUpBall powerFour = powersFour.get(j);
+					  if (i < j) {
+						  powerThree.checkCollision(powerFour);
+					  }
+				  }
+				  // Comprobar la colisión con la nave y eliminar el power-up si es necesario
+				  if (nave.checkCollisionPowerUp(powerThree,powerUp)) {
+					  // Elimina el power-up
+					  powersThree.remove(i);
+					  powersFour.remove(powerThree);
+					  i--;
+				  }
+			  }
+			  //bola roja
 			  for (int i = 0; i < powersOne.size(); i++) {
 				  PowerUpBall powerOne = powersOne.get(i);
 				  for (int j = 0; j < powersTwo.size(); j++) {
@@ -190,7 +262,7 @@ public class PantallaJuego implements Screen {
 					  }
 				  }
 				  // Comprobar la colisión con la nave y eliminar el power-up si es necesario
-				  if (nave.checkCollisionPowerUp(powerOne)) {
+				  if (nave.checkCollisionPowerUp(powerOne,powerUp)) {
 					  // Elimina el power-up
 					  powersOne.remove(i);
 					  powersTwo.remove(powerOne);
@@ -206,12 +278,27 @@ public class PantallaJuego implements Screen {
 			  for (PowerUpBall powerUpBall : powersOne) {
 				  powerUpBall.draw(batch);
 			  }
-				// Actualizar movimiento de powerUps dentro del área
+				// Actualizar movimiento de powerUps dentro del área bola roja
 
 			  for (PowerUpBall powerUpBall : powersOne) {
 				  powerUpBall.update();
 			  }
+			  for (PowerUpBall powerUpBall : powersThree) {
+				  powerUpBall.draw(batch);
+			  }
+				// Actualizar movimiento de powerUps dentro del área bola azul
 
+			  for (PowerUpBall powerUpBall : powersThree) {
+				  powerUpBall.update();
+			  }
+			// Actualizar movimiento de powerUps dentro del área bola negra
+
+			  for (PowerUpBall powerUpBall : powersFive) {
+				  powerUpBall.update();
+			  }
+			  for (PowerUpBall powerUpBall : powersFive) {
+				  powerUpBall.draw(batch);
+			  }
 			  //colisiones entre asteroides y sus rebotes
 			  for (int i=0;i<balls1.size();i++) {
 				BombaMarina ball1 = balls1.get(i);
@@ -222,9 +309,8 @@ public class PantallaJuego implements Screen {
 
 				  }
 				}
-
-
 			  }//colisiones entre powerUps y sus rebotes
+			  
 			  for (int i=0;i<powersOne.size();i++) {
 				  PowerUpBall powerOne = powersTwo.get(i);
 				  for (int j=0;j<powersTwo.size();j++) {
@@ -235,7 +321,27 @@ public class PantallaJuego implements Screen {
 					  }
 				  }
 			  }
+			  for (int i=0;i<powersThree.size();i++) {
+				  PowerUpBall powerOne = powersFour.get(i);
+				  for (int j=0;j<powersFour.size();j++) {
+					  PowerUpBall powerTwo = powersFour.get(j);
+					  if (i<j) {
+						  powerOne.checkCollision(powerTwo);
+
+					  }
+				  }
+			  }
+			  for (int i=0;i<powersFive.size();i++) {
+				  PowerUpBall powerOne = powersFive.get(i);
+				  for (int j=0;j<powersSix.size();j++) {
+					  PowerUpBall powerTwo = powersSix.get(j);
+					  if (i<j) {
+						  powerOne.checkCollision(powerTwo);
+					  }
+				  }
+			  }
 		  }
+		  
 		  //dibujar balas
 		 for (Bullet b : balas) {
 			  b.draw(batch);
@@ -282,6 +388,7 @@ public class PantallaJuego implements Screen {
 
 
 	}
+	/*
 	private void generarNuevoPowerUp() {
 		Random random = new Random();
 		PowerUpBall nuevoPowerUp = new PowerUpBall(
@@ -295,6 +402,45 @@ public class PantallaJuego implements Screen {
 
 		powersOne.add(nuevoPowerUp);
 		powersTwo.add(nuevoPowerUp);
+	}
+	*/
+	private String generarNuevoPowerUpAleatorio() {
+	    Random random = new Random();
+	    int tipoPowerUp = random.nextInt(3) + 1; // Números entre 1 y 4
+	    //tipoPowerUp = 3;
+	    switch (tipoPowerUp) {
+	        case 1:
+	            powersOne.add(crearPowerUp("bolaroja1.png"));
+	            powersTwo.add(crearPowerUp("bolaroja1.png"));
+	            return "bolaroja1";
+	            		
+	            //break;
+	        case 2:
+	            powersThree.add(crearPowerUp("bolazul1.png"));
+	            powersFour.add(crearPowerUp("bolazul1.png"));
+	            return "bolazul";
+	            //break;
+	        case 3:
+	            powersFive.add(crearPowerUp("bolanegra1.png"));
+	            powersSix.add(crearPowerUp("bolanegra1.png"));
+	            return"bolanegra1";
+	        case 4:
+	            powersFour.add(crearPowerUp("bolamarilla.png"));
+	            powersOne.add(crearPowerUp("bolamarilla.png"));
+	            return"bolaamarilla";
+	    }
+		return powerUp;
+	}
+	private PowerUpBall crearPowerUp(String textura) {
+	    Random random = new Random();
+	    return new PowerUpBall(
+	            random.nextInt((int) Gdx.graphics.getWidth()),
+	            50 + random.nextInt((int) Gdx.graphics.getHeight() - 50),
+	            20 + random.nextInt(10),
+	            velXAsteroides + random.nextInt(4),
+	            velYAsteroides + random.nextInt(4),
+	            new Texture(Gdx.files.internal(textura))
+	    );
 	}
 
 	private void imprimirFlecha()

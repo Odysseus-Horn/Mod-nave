@@ -26,6 +26,7 @@ public abstract class Nave {
     private boolean herido = false;
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
+    private int scoreSum;
     private  estrategiaDisparo disparo;
 
     private Vector2 direccionNave = new Vector2(0, 1);
@@ -36,6 +37,7 @@ public abstract class Nave {
         sonidoHerido = soundChoque;
         this.soundBala = soundBala;
         this.txBala = txBala;
+        this.scoreSum = 0;
         spr = new Sprite(tx);
         spr.setPosition(x, y);
         //spr.setOriginCenter();
@@ -165,15 +167,31 @@ public abstract class Nave {
         }
         return false;
     }
-    public boolean checkCollisionPowerUp(PowerUpBall powerUp) {
+    public boolean checkCollisionPowerUp(PowerUpBall powerUp, String color) {
         if (!herido && powerUp.getArea().overlaps(spr.getBoundingRectangle())) {
-            // Lógica de colisión con power-up, por ejemplo, aplicar efecto de vida
-            powerUp.aplicarEfectoVidas(this);
+            // Lógica de colisión con power-up basada en color
+            switch (color.toLowerCase()) {
+                case "bolaroja1":
+                    powerUp.aplicarEfectoVidas(this);  // Ejemplo: Aplicar efecto de vidas para power-up rojo
+                    return true;
+                case "bolazul":
+                    powerUp.aplicarEfectoVel(this);
+                	return true;
+                case "bolanegra1":
+                	powerUp.aplicarEfectoPuntos(this);
+                    
+                	return true;
+                case "bolaamarilla":
+                    
+                	return true;
+                default:
+                    
+                    break;
+            }
             return true;
         }
         return false;
     }
-
     public boolean estaDestruido() {
         return !herido && destruida;
     }
@@ -195,14 +213,19 @@ public abstract class Nave {
     {
         vidas-=cantidad;
     }
-
-
+    
+    public void sumScore(int cantidad) {
+    	scoreSum += cantidad;
+    }
+    
+    public int getScore() {return scoreSum; }
     public int getVidas() {return vidas;}
+    public void setScore(int score) {scoreSum = score;}
     //public boolean isDestruida() {return destruida;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public void setVidas(int vidas2) {vidas = vidas2;}
-
+    
 
 
     public Vector2 getDireccionNave() {

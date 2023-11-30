@@ -11,6 +11,10 @@ public abstract class PowerUpTemplate {
     public abstract void deshacerEfectoVidas(Nave nave);
     public abstract void aplicarEfectoVel(Nave nave);
     public abstract void deshacerEfectoVel(Nave nave);
+    public abstract void aplicarEfectoPuntos(Nave nave);
+    //public abstract void deshacerEfectoQuitar(Nave nave);
+    //public abstract void aplicarEfectoVel(Nave nave);
+    //public abstract void deshacerEfectoVel(Nave nave);
 
     public void draw(SpriteBatch batch, PantallaJuego juego, Nave nave) {
         nave.draw(batch, juego);

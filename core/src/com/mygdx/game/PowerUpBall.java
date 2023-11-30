@@ -81,11 +81,11 @@ public class PowerUpBall extends PowerUpTemplate  {
     
 	
     public void aplicarEfectoVel(Nave nave) {
-        nave.aumentarVelocidad(0.2f);
+        nave.aumentarVelocidad(0.9f);
     }
 
     public void deshacerEfectoVel(Nave nave) {
-        nave.aumentarVelocidad(-0.2f);
+        nave.aumentarVelocidad(-0.9f);
     }
     //vida uly rico
     public void deshacerEfectoVidas(Nave nave)
@@ -97,6 +97,11 @@ public class PowerUpBall extends PowerUpTemplate  {
     }
     public void aplicarEfectoVidas(Nave nave) {
         nave.setVidas(nave.getVidas() + 1);
+    }
+    
+    public void aplicarEfectoPuntos(Nave nave) {
+    	int i = 1000;
+    	nave.sumScore(i);
     }
 
 
