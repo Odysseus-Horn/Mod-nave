@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class PowerUp {
+public  class PowerUp   {
+	
     public  int cantPowerUps = 2;
 
     public void draw(SpriteBatch batch, PantallaJuego juego, Nave nave) {
@@ -36,6 +37,7 @@ public abstract class PowerUp {
     public void aplicarEfectoVidas(Nave nave) {
         nave.setVidas(nave.getVidas() + 1);
     }
+
 
 }
 

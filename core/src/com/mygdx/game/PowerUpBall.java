@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class PowerUpBall extends PowerUp {
+public class PowerUpBall extends PowerUpTemplate  {
 
     private int x;
     private int y;
@@ -77,7 +77,27 @@ public class PowerUpBall extends PowerUp {
     public void setySpeed(int ySpeed) {
         this.ySpeed = ySpeed;
     }
+    
+    
+	
+    public void aplicarEfectoVel(Nave nave) {
+        nave.aumentarVelocidad(0.2f);
+    }
 
+    public void deshacerEfectoVel(Nave nave) {
+        nave.aumentarVelocidad(-0.2f);
+    }
+    //vida uly rico
+    public void deshacerEfectoVidas(Nave nave)
+    {
+        if(nave.getVidas() > 3)
+        {
+            nave.setVidas(nave.getVidas() - 1);
+        }
+    }
+    public void aplicarEfectoVidas(Nave nave) {
+        nave.setVidas(nave.getVidas() + 1);
+    }
 
 
 
