@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.LevelPlanner.BombaMarina;
 
 
 /*clase abstracta con el propósito de modificar diversos tipos de disparo para distintas naves*/
@@ -132,7 +133,7 @@ public abstract class Nave {
 
     }
 
-    public boolean checkCollision(Ball2 b) {
+    public boolean checkCollision(BombaMarina b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
             // rebote
             if (xVel ==0) xVel += b.getXSpeed()/2;

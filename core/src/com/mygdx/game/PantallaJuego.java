@@ -12,6 +12,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.LevelPlanner.BombaMarina;
+import com.mygdx.game.LevelPlanner.Level1Factory;
+import com.mygdx.game.LevelPlanner.Level2Factory;
+import com.mygdx.game.LevelPlanner.LevelFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -39,8 +44,8 @@ public class PantallaJuego implements Screen {
 
 	private boolean paused;
 	private BuqueGuerra nave;
-	private  ArrayList<Ball2> balls1 = new ArrayList<>();
-	private  ArrayList<Ball2> balls2 = new ArrayList<>();
+	private  ArrayList<BombaMarina> balls1 = new ArrayList<>();
+	private  ArrayList<BombaMarina> balls2 = new ArrayList<>();
 	private  ArrayList<Bullet> balas = new ArrayList<>();
 
 	private ArrayList<PowerUpBall> powersOne = new ArrayList<>();
@@ -61,15 +66,15 @@ public class PantallaJuego implements Screen {
 		this.velYAsteroides = velYAsteroides;
 		this.cantAsteroides = cantAsteroides;
 		this.fondo = new Texture(Gdx.files.internal("sea-background.png"));
-
 		this.timeBetweenPowerUps = 10f; // Puedes ajustar el tiempo entre power-ups según tus necesidades
 		this.powerUpTimer = 0;
 		this.powerUpCount = 0;
 		audioManager = audioManager.getInstance();
-
 		batch = game.getBatch();
 		camera = new OrthographicCamera();	
 		camera.setToOrtho(false, 800, 640);
+
+
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		pauseSound = Gdx.audio.newSound(Gdx.files.internal("pause.mp3"));
@@ -78,6 +83,9 @@ public class PantallaJuego implements Screen {
 		gameMusic.setLooping(true);
 		audioManager.playMusic(gameMusic);
 
+		LevelFactory fabricaNivel1 = new Level1Factory();
+		LevelFactory fabricaNivel2 = new Level2Factory();
+
 	    // cargar imagen de la nave, 64x64   
 	    nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")), 
@@ -85,16 +93,21 @@ public class PantallaJuego implements Screen {
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))); 
         nave.setVidas(vidas);
 
-        //crear asteroides
-        Random r = new Random();
-	    for (int i = 0; i < cantAsteroides; i++) {
-	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4), 
-	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")));	   
-	  	    balls1.add(bb);
-	  	    balls2.add(bb);
-	  	}
+      		//crear asteroides
+		if(ronda == 1){
+			balls1 = fabricaNivel1.crearObstaculos(cantAsteroides, velXAsteroides,velYAsteroides);
+			balls2.addAll(balls1);
+		}
+		else{
+			balls1 = fabricaNivel2.crearObstaculos(cantAsteroides, velXAsteroides,velYAsteroides);
+			balls2.addAll(balls1);
+		}
+
+
+
+		Random r = new Random();
+
+
 		//Crear Bolas (powerUp)
 		Random s = new Random();
 		for (int i = 0; i < powerUpCount; i++) {
@@ -186,7 +199,7 @@ public class PantallaJuego implements Screen {
 			  }
 
 			  //actualizar movimiento de asteroides dentro del area
-			  for (Ball2 ball : balls1) {
+			  for (BombaMarina ball : balls1) {
 				  ball.update();
 			  }
 
@@ -201,14 +214,16 @@ public class PantallaJuego implements Screen {
 
 			  //colisiones entre asteroides y sus rebotes
 			  for (int i=0;i<balls1.size();i++) {
-				Ball2 ball1 = balls1.get(i);
+				BombaMarina ball1 = balls1.get(i);
 				for (int j=0;j<balls2.size();j++) {
-				  Ball2 ball2 = balls2.get(j);
+				  BombaMarina ball2 = balls2.get(j);
 				  if (i<j) {
 					  ball1.checkCollision(ball2);
 
 				  }
 				}
+
+
 			  }//colisiones entre powerUps y sus rebotes
 			  for (int i=0;i<powersOne.size();i++) {
 				  PowerUpBall powerOne = powersTwo.get(i);
@@ -228,7 +243,7 @@ public class PantallaJuego implements Screen {
 		  nave.draw(batch, this);
 		  //dibujar asteroides y manejar colision con nave
 		  for (int i = 0; i < balls1.size(); i++) {
-				Ball2 b=balls1.get(i);
+				BombaMarina b=balls1.get(i);
 				b.draw(batch);
 				  //perdió vida o game over
 				  if (nave.checkCollision(b)) {
@@ -249,6 +264,7 @@ public class PantallaJuego implements Screen {
 			dispose();
 		  }
 		  batch.end();
+
 		  //nivel completado
 		  if (balls1.size()==0) {
 			Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score,
@@ -300,7 +316,7 @@ public class PantallaJuego implements Screen {
 	}
 
 
-
+	//funcion que cambia el volumen de cada opcion en el menu de pausa
 	private void cambiarAjustes()
 	{
 		switch (opcion)
