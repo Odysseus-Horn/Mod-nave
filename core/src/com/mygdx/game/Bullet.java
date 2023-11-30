@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.LevelPlanner.BombaMarina;
 
 
 public class Bullet {
@@ -34,7 +35,7 @@ public class Bullet {
 	    	spr.draw(batch);
 	    }
 	    
-	    public boolean checkCollision(Ball2 b2) {
+	    public boolean checkCollision(BombaMarina b2) {
 	        if(spr.getBoundingRectangle().overlaps(b2.getArea())){
 	        	// Se destruyen ambos
 	            this.destroyed = true;

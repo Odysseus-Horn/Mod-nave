@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("SpaceNavigation");
 		config.setWindowedMode(1200, 800);
-		new Lwjgl3Application(new SpaceNavigation(), config);
+ 		new Lwjgl3Application(new SpaceNavigation(), config);
 	}
 }
