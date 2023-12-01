@@ -35,9 +35,9 @@ public class AudioManager {
     //constructor
     private AudioManager()
     {
-        masterVolume = 0.1f;
-        musicVolume = 0.5f;
-        soundVolume = 0.5f;
+        masterVolume = 1f;
+        musicVolume = 1f;
+        soundVolume = 1f;
     }
 
     //getter de la instancia

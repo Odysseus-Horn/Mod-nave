@@ -14,7 +14,7 @@ public class PantallaSeleccionNave implements Screen {
     private SpaceNavigation game;
     private OrthographicCamera camera;
     private Nave nave;
-    private Texture imagenNave1, imagenNave2,imagenNave3;
+    private Texture imagenNave1, imagenNave2;
     private int naveSeleccionada = 1;
     //Constructores Para los Tipos de Nave
     public PantallaSeleccionNave(SpaceNavigation game) {
@@ -23,7 +23,7 @@ public class PantallaSeleccionNave implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
 
-        imagenNave1 = new Texture(Gdx.files.internal("BuqueGuerra.png"));
+        imagenNave1 = new Texture(Gdx.files.internal("war-ship.png"));
         imagenNave2 = new Texture(Gdx.files.internal("Barco Pirata.png"));
 
 
@@ -71,10 +71,10 @@ public class PantallaSeleccionNave implements Screen {
         // Lógica para iniciar el juego con la nave específica
 
         if (naveSeleccionada == 1) {
-            nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("BuqueGuerra.png")),
+            nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,imagenNave1,
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
                     new Texture(Gdx.files.internal("Rocket2.png")),
-                    Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+                    Gdx.audio.newSound(Gdx.files.internal("bullet-sound.mp3")));
             nave.setVidas(3);
 
         } else if (naveSeleccionada == 2) {
@@ -83,7 +83,7 @@ public class PantallaSeleccionNave implements Screen {
             nave = new BarcoPirata(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("BarcoPirataC.png")),
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
                         new Texture(Gdx.files.internal("BalaCañon.png")),
-                    Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+                    Gdx.audio.newSound(Gdx.files.internal("bullet-sound.mp3")));
             nave.setVidas(3);
 
 
