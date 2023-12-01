@@ -80,9 +80,9 @@ public class PantallaSeleccionNave implements Screen {
         } else if (naveSeleccionada == 2) {
             //Hay que crear Otro Tipo de Nave.
 
-            nave = new BarcoPirata(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("Barco Pirata.png")),
+            nave = new BarcoPirata(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("BarcoPirataC.png")),
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-                    new Texture(Gdx.files.internal("Rocket2.png")),
+                        new Texture(Gdx.files.internal("BalaCañon.png")),
                     Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
             nave.setVidas(3);
 
