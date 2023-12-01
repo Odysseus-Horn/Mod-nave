@@ -65,7 +65,7 @@ public class PantallaJuego implements Screen {
 	public PantallaJuego(SpaceNavigation game,Nave nave ,int ronda, int vidas, int score,
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
 
-		//inicializar datos del objeto pantall
+		//inicializar datos del objeto pantalla
 		this.game = game;
 		this.nave = nave;
 		this.ronda = ronda;
@@ -91,9 +91,12 @@ public class PantallaJuego implements Screen {
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		pauseSound = Gdx.audio.newSound(Gdx.files.internal("pause.mp3"));
 
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("pirate-music.mp3")); //
 		gameMusic.setLooping(true);
 		audioManager.playMusic(gameMusic);
+
+
 
 		LevelFactory fabricaNivel1 = new Level1Factory();
 		LevelFactory fabricaNivel2 = new Level2Factory();
