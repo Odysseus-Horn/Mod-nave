@@ -30,15 +30,10 @@ public class BuqueGuerra extends Nave{
     
     public BuqueGuerra(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
     	super(x,y,tx,soundChoque,txBala,soundBala);
+        this.disparo = new DisparoDefault(soundBala);
     }
 
-    //se sobreescribe el método disparar de la clase abstracta
-    @Override
-    public void disparar(PantallaJuego juego) {
-        Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,(int) (10*direccionNave.x),(int) (10*direccionNave.y),txBala);
-        juego.agregarBala(bala);
-        soundBala.play();
-    }
+
 
     public boolean estaDestruido() {
        return !herido && destruida;

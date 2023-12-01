@@ -27,7 +27,7 @@ public abstract class Nave {
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
     private int scoreSum;
-    private  estrategiaDisparo disparo;
+    protected  estrategiaDisparo disparo;
 
     private Vector2 direccionNave = new Vector2(0, 1);
 
@@ -43,7 +43,6 @@ public abstract class Nave {
         //spr.setOriginCenter();
         spr.setBounds(x, y, 45, 45);
         spr.setOrigin(spr.getWidth() / 2, spr.getHeight() / 2);
-        disparo = new DisparoDefault(soundBala); // Inicialización de la estrategia de disparo
         audioManager = audioManager.getInstance();
     }
 
@@ -92,7 +91,7 @@ public abstract class Nave {
         spr.setRotation(degrees - 90);
     }
     //hay que cambiar esto 
-    public void disparar1(PantallaJuego juego) {
+    public void disparar(PantallaJuego juego) {
         float x = spr.getX() + spr.getWidth() / 2 - 5;
         float y = spr.getY() + spr.getHeight() / 2 - 5;
         int xVel = (int) (10 * direccionNave.x);
@@ -100,7 +99,7 @@ public abstract class Nave {
         disparo.disparar(x, y, xVel, yVel,this.txBala, juego); // Llamada al método de la interfaz estrategiaDisparo
     }
 
-    public abstract void disparar(PantallaJuego juego);
+
 
     public void draw(SpriteBatch batch, PantallaJuego juego){
         //se obtienen las dimensiones del sprite
@@ -128,9 +127,7 @@ public abstract class Nave {
         }
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Bullet  bala = new Bullet(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,(int) (10*direccionNave.x),(int) (10*direccionNave.y),txBala);
-            juego.agregarBala(bala);
-            audioManager.playSound(soundBala);
+            disparar(juego);
         }
 
     }

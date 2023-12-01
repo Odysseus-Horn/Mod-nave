@@ -23,9 +23,9 @@ public class PantallaSeleccionNave implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
 
-        imagenNave1 = new Texture(Gdx.files.internal("MainShip3.png"));
-        imagenNave2 = new Texture(Gdx.files.internal("MainShip3.png"));
-        //imagenNave3 = new Texture(Gdx.files.internal("nave3.png"));
+        imagenNave1 = new Texture(Gdx.files.internal("BuqueGuerra.png"));
+        imagenNave2 = new Texture(Gdx.files.internal("Barco Pirata.png"));
+
 
     }
     public void render(float delta) {
@@ -71,7 +71,7 @@ public class PantallaSeleccionNave implements Screen {
         // Lógica para iniciar el juego con la nave específica
 
         if (naveSeleccionada == 1) {
-            nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+            nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("BuqueGuerra.png")),
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
                     new Texture(Gdx.files.internal("Rocket2.png")),
                     Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
@@ -80,7 +80,7 @@ public class PantallaSeleccionNave implements Screen {
         } else if (naveSeleccionada == 2) {
             //Hay que crear Otro Tipo de Nave.
 
-            nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+            nave = new BarcoPirata(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("Barco Pirata.png")),
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
                     new Texture(Gdx.files.internal("Rocket2.png")),
                     Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
