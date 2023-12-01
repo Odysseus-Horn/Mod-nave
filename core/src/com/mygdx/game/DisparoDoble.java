@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
+//clase concreta que implementa la estrategia de disparo doble
 public class DisparoDoble implements  estrategiaDisparo{
 
     private Sound soundBala;

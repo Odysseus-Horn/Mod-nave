@@ -14,7 +14,7 @@ public class BombaMarinaLevel2 implements BombaMarina{
     private int ySpeed;
     private Sprite spr;
 
-
+    //constructor para bombas de rondas mayores a uno
     public BombaMarinaLevel2(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
         spr = new Sprite(tx);
         this.x = x;
@@ -52,6 +52,7 @@ public class BombaMarinaLevel2 implements BombaMarina{
         spr.draw(batch);
     }
 
+    //revisa las colisiones entre bombas
     public void checkCollision(BombaMarina b2) {
         if(spr.getBoundingRectangle().overlaps(b2.getSpr().getBoundingRectangle())){
             // rebote

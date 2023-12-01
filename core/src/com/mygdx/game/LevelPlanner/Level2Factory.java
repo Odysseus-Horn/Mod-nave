@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 import java.util.Random;
-import com.mygdx.game.Ball2;
 
 public class Level2Factory implements LevelFactory{
     public Level2Factory(){
 
     }
+
+    //crea una cantidad de obstáculos para un objeto concreto
     @Override
     public ArrayList<BombaMarina> crearObstaculos(int cant, int velX, int velY) {
         ArrayList obstaculosNivel2 = new ArrayList<BombaMarina>();

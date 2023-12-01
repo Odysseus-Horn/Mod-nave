@@ -34,7 +34,8 @@ public class Bullet {
 	    public void draw(SpriteBatch batch) {
 	    	spr.draw(batch);
 	    }
-	    
+
+		// revisar las colisiones con las bombas para destruir
 	    public boolean checkCollision(BombaMarina b2) {
 	        if(spr.getBoundingRectangle().overlaps(b2.getArea())){
 	        	// Se destruyen ambos

@@ -32,7 +32,7 @@ public class AudioManager {
     private float musicVolume;
     private float soundVolume;
 
-
+    //constructor
     private AudioManager()
     {
         masterVolume = 0.1f;
@@ -40,6 +40,7 @@ public class AudioManager {
         soundVolume = 0.5f;
     }
 
+    //getter de la instancia
     public static AudioManager getInstance()
     {
         if(instance == null)

@@ -90,7 +90,7 @@ public abstract class Nave {
         float degrees = direccionNave.angleDeg();
         spr.setRotation(degrees - 90);
     }
-    //hay que cambiar esto 
+    //función de disparar
     public void disparar(PantallaJuego juego) {
         float x = spr.getX() + spr.getWidth() / 2 - 5;
         float y = spr.getY() + spr.getHeight() / 2 - 5;
@@ -132,6 +132,7 @@ public abstract class Nave {
 
     }
 
+    //revisa las colisiones con las bombas para revisar
     public boolean checkCollision(BombaMarina b) {
         if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
             // rebote
@@ -164,6 +165,8 @@ public abstract class Nave {
         }
         return false;
     }
+
+    //revisa las colisiones con los tipos de powerups
     public boolean checkCollisionPowerUp(PowerUpBall powerUp, String color) {
         if (!herido && powerUp.getArea().overlaps(spr.getBoundingRectangle())) {
             // Lógica de colisión con power-up basada en color
@@ -195,6 +198,7 @@ public abstract class Nave {
     public boolean estaHerido() {
         return herido;
     }
+
 
     public void aumentarVelocidad(float porcentaje)
     {

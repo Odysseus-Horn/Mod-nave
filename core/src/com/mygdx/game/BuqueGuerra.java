@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 
 
-
+//clase concreta de un tipo de nave
 public class BuqueGuerra extends Nave{
 	
 	private boolean destruida = false;

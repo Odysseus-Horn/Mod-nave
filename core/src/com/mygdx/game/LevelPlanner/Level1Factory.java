@@ -2,16 +2,18 @@ package com.mygdx.game.LevelPlanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.Ball2;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+// clase concreta para una fábrica de nivel 1
 public class Level1Factory implements LevelFactory{
 
     public Level1Factory(){
 
     }
+
+    //crea una cantidad dada por parámetro de cierto obstáculo a crear
     @Override
     public ArrayList<BombaMarina> crearObstaculos(int cant, int velX, int velY) {
         ArrayList obstaculosNivel1 = new ArrayList<BombaMarina>();

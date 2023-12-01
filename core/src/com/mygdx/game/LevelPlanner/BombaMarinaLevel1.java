@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Nave;
 
+//objetos de bomba utilizados para la ronda 1
 public class BombaMarinaLevel1 implements BombaMarina{
     private int x;
     private int y;
@@ -14,7 +15,7 @@ public class BombaMarinaLevel1 implements BombaMarina{
     private int ySpeed;
     private Sprite spr;
 
-
+    //constructor
     public BombaMarinaLevel1(int x, int y, int size, int xSpeed, int ySpeed, Texture tx) {
         spr = new Sprite(tx);
         this.x = x;
@@ -33,6 +34,7 @@ public class BombaMarinaLevel1 implements BombaMarina{
         this.setySpeed(ySpeed);
     }
 
+    //actualiza la posición de la velocidad
     public void update() {
         x += getXSpeed();
         y += getySpeed();
@@ -44,6 +46,7 @@ public class BombaMarinaLevel1 implements BombaMarina{
         spr.setPosition(x, y);
     }
 
+
     public Rectangle getArea() {
         return spr.getBoundingRectangle();
     }
@@ -53,6 +56,7 @@ public class BombaMarinaLevel1 implements BombaMarina{
     }
 
     public void checkCollision(BombaMarina b2) {
+        //obtiene las hitboxes de ambas bombas
         Rectangle thisArea = this.getArea();
         Rectangle otherArea = b2.getArea();
 

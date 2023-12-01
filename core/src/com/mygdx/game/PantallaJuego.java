@@ -40,7 +40,6 @@ public class PantallaJuego implements Screen {
 	private int opcion = 1;
 	private boolean keyDownPressed;
 	private boolean keyUpPressed;
-	private List<PowerUp> powerUps;
 
 	private boolean paused;
 	private Nave nave;
@@ -66,6 +65,7 @@ public class PantallaJuego implements Screen {
 	public PantallaJuego(SpaceNavigation game,Nave nave ,int ronda, int vidas, int score,
 			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
 
+		//inicializar datos del objeto pantall
 		this.game = game;
 		this.nave = nave;
 		this.ronda = ronda;
@@ -194,6 +194,8 @@ public class PantallaJuego implements Screen {
 			    generarNuevoPowerUpAleatorio();
 			    elapsedTimeSincePowerUp = 0;
 			}*/
+
+			//revisa si la nave no está herida
 		  if (!nave.estaHerido()) {
 			  // colisiones entre balas y asteroides y su destruccion
 			  for (int i = 0; i < balas.size(); i++) {
@@ -359,6 +361,7 @@ public class PantallaJuego implements Screen {
 			  }
 			}
 
+		  //verifica si el jugador perdió
 		  if (nave.getVidas() == 0) {
 			if (score > game.getHighScore())
 				game.setHighScore(score);
@@ -441,6 +444,7 @@ public class PantallaJuego implements Screen {
 	    );
 	}
 
+	//imprime la flecha según la opción del código
 	private void imprimirFlecha()
 	{
 		switch(opcion)

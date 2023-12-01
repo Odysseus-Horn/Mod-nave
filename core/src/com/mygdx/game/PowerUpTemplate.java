@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+//clase abstracta base del template method
 public abstract class PowerUpTemplate {
 	public abstract void aplicarEfectoVidas(Nave nave);
     public abstract void deshacerEfectoVidas(Nave nave);
