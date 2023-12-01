@@ -459,6 +459,9 @@ public class PantallaJuego implements Screen {
 			case 3:
 				game.getFont().draw(batch, "->", Gdx.graphics.getWidth() / 2.f - 400, Gdx.graphics.getHeight() / 2.f);
 				break;
+			case 4:
+				game.getFont().draw(batch, "->", Gdx.graphics.getWidth() / 2.f - 400, Gdx.graphics.getHeight() / 2.f - 100);
+				break;
 		}
 
 	}
@@ -524,6 +527,12 @@ public class PantallaJuego implements Screen {
 					}
 				}
 			break;
+			case 4:
+				if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+					game.setScreen(new PantallaSeleccionNave(game));
+					dispose();
+				}
+
 		}
 	}
 
@@ -540,12 +549,12 @@ public class PantallaJuego implements Screen {
 		//lógica del movimiento de las opciones de menú
 		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
 			opcion++;
-			if(opcion > 3) opcion = 1;
+			if(opcion > 4) opcion = 1;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
 		{
 			opcion--;
-			if(opcion < 1) opcion = 3;
+			if(opcion < 1) opcion = 4;
 		}
 
 		imprimirFlecha();
@@ -555,7 +564,7 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "Volumen general: " + audioManager.getMasterVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f + 200);
 		game.getFont().draw(batch, "Volumen SFX: " + audioManager.getSoundVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f + 100);
 		game.getFont().draw(batch, "Volumen música: " + audioManager.getMusicVolume(), Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f);
-
+		game.getFont().draw(batch, "Salir del juego", Gdx.graphics.getWidth() / 2.f - 200, Gdx.graphics.getHeight() / 2.f - 100);
 
 		batch.end();
 	}
