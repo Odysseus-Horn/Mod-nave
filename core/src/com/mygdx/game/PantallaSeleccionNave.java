@@ -23,7 +23,7 @@ public class PantallaSeleccionNave implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
 
-        imagenNave1 = new Texture(Gdx.files.internal("war-ship.png"));
+        imagenNave1 = new Texture(Gdx.files.internal("Bote.png"));
         imagenNave2 = new Texture(Gdx.files.internal("Barco Pirata.png"));
 
 
@@ -73,7 +73,7 @@ public class PantallaSeleccionNave implements Screen {
         if (naveSeleccionada == 1) {
             nave = new BuqueGuerra(Gdx.graphics.getWidth()/2-50,30,imagenNave1,
                     Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-                    new Texture(Gdx.files.internal("Rocket2.png")),
+                    new Texture(Gdx.files.internal("BalaCañon.png")),
                     Gdx.audio.newSound(Gdx.files.internal("bullet-sound.mp3")));
             nave.setVidas(3);
 
