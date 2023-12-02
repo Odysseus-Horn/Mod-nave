@@ -18,6 +18,5 @@ public class DisparoDoble implements  estrategiaDisparo{
         Bullet bala1 = new Bullet(x, y, xSpeed, ySpeed, tx);
         juego.agregarBala(bala);
         juego.agregarBala(bala1);
-        soundBala.play();
     }
 }

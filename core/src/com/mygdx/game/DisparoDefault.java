@@ -17,7 +17,6 @@ public class DisparoDefault implements estrategiaDisparo{
     public void disparar(float x, float y, int xSpeed, int ySpeed, Texture tx, PantallaJuego juego){
         Bullet bala = new Bullet(x, y, xSpeed, ySpeed, tx);
         juego.agregarBala(bala);
-        soundBala.play();
     }
 
 }

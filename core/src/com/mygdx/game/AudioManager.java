@@ -23,7 +23,6 @@ import com.badlogic.gdx.Input;
 *
 *
 * */
-
 public class AudioManager {
     private static AudioManager instance;
 

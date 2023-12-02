@@ -31,7 +31,7 @@ public abstract class Nave {
 
     private Vector2 direccionNave = new Vector2(0, 1);
 
-    private AudioManager audioManager;
+    protected AudioManager audioManager;
 
     public Nave(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         sonidoHerido = soundChoque;
@@ -127,6 +127,7 @@ public abstract class Nave {
         }
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            audioManager.playSound(soundBala);
             disparar(juego);
         }
 
